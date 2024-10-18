@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sistema.entregas.models.CustomerModel;
-import sistema.entregas.services.CustomerService;
+import sistema.entregas.services.impl.CustomerServiceImpl;
 
 import java.util.List;
 
@@ -15,10 +15,10 @@ import java.util.List;
 @RequestMapping("/api/customer")
 public class CustomerController {
     @Autowired
-    private CustomerService customerService;
+    private CustomerServiceImpl customerServiceImpl;
 
     @GetMapping
     public ResponseEntity<List<CustomerModel>> findAll(){
-        return ResponseEntity.ok(customerService.getAll());
+        return ResponseEntity.ok(customerServiceImpl.getAll());
     }
 }
