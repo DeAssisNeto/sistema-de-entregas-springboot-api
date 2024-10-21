@@ -23,4 +23,9 @@ public class CustomerModel implements Serializable {
     private String name;
     @Column(nullable = false)
     private String cpf;
+
+    public CustomerModel(String name, String cpf) {
+        this.name = name;
+        this.cpf = cpf;
+    }
 }
