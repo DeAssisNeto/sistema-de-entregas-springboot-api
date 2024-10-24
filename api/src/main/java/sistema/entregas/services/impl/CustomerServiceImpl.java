@@ -2,6 +2,7 @@ package sistema.entregas.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sistema.entregas.Exceptions.ResourceNotFoundException;
 import sistema.entregas.models.CustomerModel;
 import sistema.entregas.repositories.CustomerRepository;
 import sistema.entregas.services.CustomerService;
@@ -24,7 +25,7 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerModel getById(UUID id) {
         Optional<CustomerModel> customer = customerRepository.findById(id);
         if (customer.isPresent()) return customer.get();
-        return null;
+        throw new ResourceNotFoundException("Customer", "ID", id.toString());
     }
 
 
