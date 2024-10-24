@@ -28,4 +28,10 @@ public class CustomerModel implements Serializable {
         this.name = name;
         this.cpf = cpf;
     }
+
+    public CustomerModel(UUID id, String name, String cpf) {
+        this.id = id;
+        this.name = name;
+        this.cpf = cpf;
+    }
 }

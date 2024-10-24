@@ -11,12 +11,16 @@ import sistema.entregas.models.CustomerModel;
 import sistema.entregas.repositories.CustomerRepository;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 class CustomerServiceImplTest {
     public static final String CUSTOMER_1 = "Customer1";
     public static final String CPF1 = "11111111111";
     public static final String CUSTOMER_2 = "Customer2";
     public static final String CPF2 = "22222222222";
+    public static final UUID id1 = UUID.randomUUID();
+    public static final UUID id2 = UUID.randomUUID();
     @InjectMocks
     private CustomerServiceImpl customerService;
 
@@ -25,6 +29,7 @@ class CustomerServiceImplTest {
 
     private CustomerModel customer1;
     private CustomerModel customer2;
+    private Optional<CustomerModel> customerOptional;
 
     @BeforeEach
     void setUp(){
@@ -46,8 +51,23 @@ class CustomerServiceImplTest {
         Mockito.verify(customerRepository).findAll();
     }
 
+    @Test
+    void whenGetCustomerByIdThenReturnCustomerModel() {
+        Mockito.when(customerRepository.findById(id1)).thenReturn(customerOptional);
+
+        CustomerModel result = customerService.getById(id1);
+
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(CustomerModel.class, result.getClass());
+        Assertions.assertEquals(id1, result.getId());
+        Assertions.assertEquals(CUSTOMER_1, result.getName());
+        Assertions.assertEquals(CPF1, result.getCpf());
+
+    }
+
     void startCustomers(){
-        customer1 = new CustomerModel(CUSTOMER_1, CPF1);
-        customer2 = new CustomerModel(CUSTOMER_2, CPF2);
+        customer1 = new CustomerModel(id1, CUSTOMER_1, CPF1);
+        customer2 = new CustomerModel(id2, CUSTOMER_2, CPF2);
+        customerOptional = Optional.of(new CustomerModel(id1, CUSTOMER_1, CPF1));
     }
 }
