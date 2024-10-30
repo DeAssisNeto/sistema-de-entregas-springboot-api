@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import sistema.entregas.Exceptions.ResourceNotFoundException;
 import sistema.entregas.models.CustomerModel;
 import sistema.entregas.repositories.CustomerRepository;
 
@@ -62,6 +63,24 @@ class CustomerServiceImplTest {
         Assertions.assertEquals(id1, result.getId());
         Assertions.assertEquals(CUSTOMER_1, result.getName());
         Assertions.assertEquals(CPF1, result.getCpf());
+
+    }
+
+    @Test
+    void whenGetCustomerByIdThenReturnResourceNotFoundException() {
+        UUID uuid = UUID.randomUUID();
+        Mockito.when(customerRepository.findById(uuid))
+                .thenThrow(new ResourceNotFoundException("Customer", "ID", uuid.toString()));
+
+        try {
+            customerService.getById(uuid);
+        }catch (ResourceNotFoundException e){
+            Assertions.assertEquals(ResourceNotFoundException.class, e.getClass());
+            Assertions.assertEquals(String
+                    .format("Recurso %s não encontrado com %s = %s", "Customer", "ID", uuid), e.getMessage());
+            Assertions.assertThrows(ResourceNotFoundException.class, () -> customerService.getById(uuid));
+
+        }
 
     }
 
