@@ -2,11 +2,12 @@ package sistema.entregas.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sistema.entregas.dtos.CustomerRecordDto;
 import sistema.entregas.models.CustomerModel;
 import sistema.entregas.services.CustomerService;
-import sistema.entregas.services.impl.CustomerServiceImpl;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,8 +23,13 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.getAll());
     }
 
-    @GetMapping
+    @GetMapping("{id}")
     public ResponseEntity<CustomerModel> findById(@PathVariable UUID id){
         return ResponseEntity.ok(customerService.getById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<CustomerModel> save(@RequestBody CustomerRecordDto dto){
+        return ResponseEntity.status(HttpStatus.CREATED).body(customerService.save(dto));
     }
 }
